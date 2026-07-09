@@ -31,6 +31,14 @@ internal fun AppearanceSettingsScreen(
                 onThemeSelected = { viewModel.setThemeMode(it) }
             )
             CardDivider()
+	    SettingsToggleRow(
+                icon = Icons.Rounded.Colorize,
+                title = "Dynamic Colors",
+                subtitle = "Match colors to your wallpaper (Android 12+)",
+                checked = settings.dynamicColorEnabled,
+                onCheckedChange = { viewModel.setDynamicColorEnabled(it) }
+            )
+            CardDivider()
             FontSizeRow(
                 currentScale = settings.fontScale,
                 onScaleChanged = { viewModel.setFontScale(it) }

@@ -1,8 +1,8 @@
-# MonoMail
+# MaterialMail
 
-A monochrome email client for Android, built with Jetpack Compose and Material 3 Expressive. No colour accents, no noise, just email.
+An email client for Android, built with Jetpack Compose. A fork of the original monochrome [MonoMail](https://github.com/shrivatsav-0/monomail) email client, now featuring Dynamic Colors sourced from the user's wallpaper.
 
-[Website](https://monomail.millosaurs.me) · [Download APK](https://github.com/shrivatsav-0/monomail/releases/latest) · [Discord](https://discord.gg/monomail)
+[Download APK](https://github.com/capuanosalvo/materialmail/releases/latest)
 
 > **Gmail API Warning:** This app uses Gmail API OAuth verification which is limited to **100 test users**. The app is not published on the Play Store (cannot afford the developer account fee), so Google will show **"This app is blocked"** for any user beyond the first 100. If you encounter this, the test user quota has been exhausted. You can either run the app from source with your own Google Cloud project credentials, or use an Outlook account instead (no such limit).
 
@@ -10,7 +10,7 @@ A monochrome email client for Android, built with Jetpack Compose and Material 3
 
 ## Overview
 
-MonoMail is an open-source Android email client that connects to **Gmail**, **Microsoft Outlook**, and **IMAP/SMTP** providers via OAuth and prioritises a distraction-free reading experience. The design system is intentionally monochrome — every screen uses only black, white, and greyscale, built on top of Material 3 Expressive.
+MaterialMail is an open-source Android email client that connects to **Gmail**, **Microsoft Outlook**, and **IMAP/SMTP** providers via OAuth and prioritises a distraction-free reading experience. It has a clean interface built on top of Material 3 Expressive with Dynamic Colors (only Android 12+).
 
 The architecture is offline-first: all reads and writes go through a local Room database encrypted with SQLCipher, and background sync via WorkManager + a persistent action queue keeps the remote state consistent without blocking the UI.
 
@@ -87,6 +87,7 @@ Accessible from the profile card. Settings uses a **hub-and-spoke** architecture
 
 **Appearance sub-screen:**
 - Theme: System, Light, or Dark with animated spring segmented control (selection bounces to 1.04x scale).
+- Dynamic Colors: toggle dynamic colors (if off will use monochrome colorscheme (will add default colorschemes in future))
 - Font Size: Extra Small, Small, Default, Large, Extra Large (0.7x to 1.3x scaling) with live preview.
 - Show Dividers: toggle lines between email items.
 - Compact List: reduce spacing in the email list.
@@ -214,7 +215,7 @@ The UI uses spring physics throughout for tactile, responsive feedback:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/shrivatsav-0/monomail.git
+   git clone https://github.com/capuanosalvo/materialmail.git
    ```
 
 2. Create a `secrets.properties` file in the root project directory (for building the `playstore` flavor):
@@ -236,11 +237,11 @@ The UI uses spring physics throughout for tactile, responsive feedback:
 
 ### Installing the APK (GitHub vs Play Store Builds)
 
-MonoMail is built using two distinct distribution flavors to protect API secrets:
+MaterialMail is built using two distinct distribution flavors to protect API secrets:
 - **Play Store Build (`playstore`)**: Comes bundled with the developer's official Google OAuth Web Client ID.
 - **GitHub Release Build (`github`)**: Excludes the developer's private OAuth Web Client ID. Note: Google Sign-In is temporarily disabled on GitHub builds while Google's OAuth verification is in progress. Once verification completes, it will be enabled. You can use Microsoft Outlook or IMAP/SMTP accounts without restriction in the meantime.
 
-Download the latest release from the [Releases page](https://github.com/shrivatsav-0/monomail/releases/latest) and install directly. You may need to enable "Install unknown apps" in your device settings.
+Download the latest release from the [Releases page](https://github.com/capuanosalvo/materialmail/releases/latest) and install directly. You may need to enable "Install unknown apps" in your device settings.
 
 Minimum supported version: Android 8.0 (API 26).
 
@@ -252,16 +253,11 @@ Pull requests are welcome. For significant changes, open an issue first to discu
 Fork -> Branch -> Commit -> Pull Request
 ```
 
-## Support
-
-If you like this project and want to support its development, consider buying me a coffee. It is a great help for a student working on open source.
-
-<a href='https://ko-fi.com/N4N2W53M5' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
 ## License
 
 [GPL-3.0](./LICENSE) — free to use, modify, and distribute under the same terms.
 
 ---
 
-Built by [Shrivatsav](https://github.com/shrivatsav-0)
+Original project built by [Shrivatsav](https://github.com/shrivatsav-0)
+Material You fork maintained by [capuanosalvo](https://github.com/capuanosalvo)

@@ -1,5 +1,9 @@
 package com.shrivatsav.monomail.ui.theme
 
+import android.os.Build
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialExpressiveTheme
@@ -88,6 +92,7 @@ object MonoMailTheme {
 fun MonoMailTheme(
     themeMode: String = "SYSTEM",
     useSystemFont: Boolean = false,
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val darkTheme = when (themeMode) {
@@ -95,7 +100,14 @@ fun MonoMailTheme(
         "DARK"  -> true
         else    -> isSystemInDarkTheme()
     }
-    val colorScheme = if (darkTheme) DarkColors else LightColors
+    val context = LocalContext.current
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        darkTheme -> DarkColors
+        else -> LightColors
+    }
     val extendedColors = if (darkTheme) DarkExtendedColors else LightExtendedColors
     val typography = if (useSystemFont) SystemTypography else AppTypography
 

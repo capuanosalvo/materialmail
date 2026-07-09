@@ -22,6 +22,7 @@ class SettingsViewModel @Inject constructor(
     val settings: StateFlow<AppSettings> = settingsDataStore.settingsFlow
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AppSettings())
     fun setThemeMode(mode: ThemeMode) = viewModelScope.launch { settingsDataStore.setThemeMode(mode) }
+    fun setDynamicColorEnabled(enabled: Boolean) = viewModelScope.launch { settingsDataStore.setDynamicColorEnabled(enabled) }
     fun setFontScale(scale: FontScale) = viewModelScope.launch { settingsDataStore.setFontScale(scale) }
     fun setUseSystemFont(enabled: Boolean) = viewModelScope.launch { settingsDataStore.setUseSystemFont(enabled) }
     fun setShowDividers(show: Boolean) = viewModelScope.launch { settingsDataStore.setShowDividers(show) }

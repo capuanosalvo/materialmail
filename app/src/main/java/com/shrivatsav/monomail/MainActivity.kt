@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalDensity as LocalDensityComposable
 import androidx.compose.ui.unit.Density
 import androidx.work.Constraints
@@ -70,12 +69,13 @@ class MainActivity : ComponentActivity() {
             androidx.compose.runtime.CompositionLocalProvider(
                 LocalDensityComposable provides Density(
                     density = density.density,
-                    fontScale = density.fontScale * fontScaleMultiplier
+                    fontScale = density.fontScale * fontScaleMultiplier,
                 )
             ) {
                 MonoMailTheme(
                     themeMode = settings.themeMode.name,
-                    useSystemFont = settings.useSystemFont
+                    dynamicColor = settings.dynamicColorEnabled,
+                    useSystemFont = settings.useSystemFont,
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         NavGraph(
