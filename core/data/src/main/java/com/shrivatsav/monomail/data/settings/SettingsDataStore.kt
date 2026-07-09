@@ -45,6 +45,7 @@ data class EmailTemplate(
 )
 data class AppSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val dynamicColorEnabled: Boolean = true,
     val fontScale: FontScale = FontScale.DEFAULT,
     val useSystemFont: Boolean = false,
     val showDividers: Boolean = false,
@@ -79,6 +80,7 @@ class SettingsDataStore(private val context: Context) {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private object Keys {
         val THEME_MODE = stringPreferencesKey("theme_mode")
+	val DYNAMIC_COLOR_ENABLED = booleanPreferencesKey("dynamic_color_enabled")
         val FONT_SCALE = stringPreferencesKey("font_scale")
         val USE_SYSTEM_FONT = booleanPreferencesKey("use_system_font")
         val SHOW_DIVIDERS = booleanPreferencesKey("show_dividers")
@@ -112,6 +114,7 @@ class SettingsDataStore(private val context: Context) {
         val dockConfigJson = prefs[Keys.DOCK_CONFIG]
         return AppSettings(
             themeMode = prefs[Keys.THEME_MODE]?.let { ThemeMode.valueOf(it) } ?: ThemeMode.SYSTEM,
+	    dynamicColorEnabled = prefs[Keys.DYNAMIC_COLOR_ENABLED] ?: true,
             fontScale = prefs[Keys.FONT_SCALE]?.let { FontScale.valueOf(it) } ?: FontScale.DEFAULT,
             useSystemFont = prefs[Keys.USE_SYSTEM_FONT] ?: false,
             showDividers = prefs[Keys.SHOW_DIVIDERS] ?: false,
@@ -163,6 +166,9 @@ class SettingsDataStore(private val context: Context) {
         .stateIn(scope, SharingStarted.Eagerly, AppSettings())
     suspend fun setThemeMode(mode: ThemeMode) {
         context.dataStore.edit { it[Keys.THEME_MODE] = mode.name }
+    }
+    suspend fun setDynamicColorEnabled(enabled: Boolean) {
+        context.dataStore.edit { it[Keys.DYNAMIC_COLOR_ENABLED] = enabled }
     }
     suspend fun setFontScale(scale: FontScale) {
         context.dataStore.edit { it[Keys.FONT_SCALE] = scale.name }

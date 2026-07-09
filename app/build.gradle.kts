@@ -32,7 +32,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 61
-        versionName = "1.7.37"
+        versionName = "1.7.37-md3e.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -55,10 +55,13 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = rootProject.file(keystoreProps.getProperty("storeFile", ""))
-            storePassword = keystoreProps.getProperty("storePassword", "")
-            keyAlias = keystoreProps.getProperty("keyAlias", "")
-            keyPassword = keystoreProps.getProperty("keyPassword", "")
+            val storeFilePath = keystoreProps.getProperty("storeFile")
+            if (storeFilePath != null && storeFilePath != "") {
+                storeFile = rootProject.file(storeFilePath)
+            }
+            storePassword = keystoreProps.getProperty("storePassword")
+            keyAlias = keystoreProps.getProperty("keyAlias")
+            keyPassword = keystoreProps.getProperty("keyPassword")
         }
     }
 
@@ -67,7 +70,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
+            if (signingConfigs.getByName("release").storeFile != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
@@ -141,6 +146,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
@@ -226,4 +233,28 @@ tasks.matching { it.name.contains("Github", ignoreCase = true) && it.name.contai
 }
 
 // Retain ProGuard/R8 mapping files for crash deobfuscation across releases.
-// Mapping files are at build/outputs/mapping/{variant}/mapping.txt after each build.
+// After each release build, the mapping file is copied to a versioned archive
+// so crash reports from any published version can be deobfuscated.
+// Capture version at config time (avoids serializing the android extension for cache).
+val archiveVersionName = android.defaultConfig.versionName ?: "unknown"
+val archiveVersionCode = android.defaultConfig.versionCode ?: 0
+val archiveMapping by tasks.registering {
+    group = "Reporting"
+    description = "Archive all release ProGuard mapping files with version info"
+    doLast {
+        val variants = listOf("githubRelease", "playstoreRelease")
+        for (variant in variants) {
+            val mappingFile = layout.buildDirectory.file("outputs/mapping/$variant/mapping.txt").get().asFile
+            if (mappingFile.exists()) {
+                val archiveDir = layout.buildDirectory.dir("outputs/mapping/archive").get().asFile
+                archiveDir.mkdirs()
+                mappingFile.copyTo(
+                    File(archiveDir, "mapping-$archiveVersionName-$archiveVersionCode-$variant.txt"),
+                    overwrite = true
+                )
+            }
+        }
+    }
+}
+tasks.matching { it.name.matches(Regex("assemble(Github|Playstore)Release")) }
+    .configureEach { finalizedBy(archiveMapping) }

@@ -69,12 +69,13 @@ class MainActivity : ComponentActivity() {
             androidx.compose.runtime.CompositionLocalProvider(
                 LocalDensityComposable provides Density(
                     density = density.density,
-                    fontScale = density.fontScale * fontScaleMultiplier
+                    fontScale = density.fontScale * fontScaleMultiplier,
                 )
             ) {
                 MonoMailTheme(
                     themeMode = settings.themeMode.name,
-                    useSystemFont = settings.useSystemFont
+                    dynamicColor = settings.dynamicColorEnabled,
+                    useSystemFont = settings.useSystemFont,
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         NavGraph(
