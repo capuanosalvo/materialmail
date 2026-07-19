@@ -1,5 +1,8 @@
 # MaterialMail
 
+### Archived because [MonoMail](https://github.com/shrivatsav-0/monomail) now supports Dynamic colors (big thanks to [Shrivatsav](https://github.com/shrivatsav-0))
+#
+
 An email client for Android, built with Jetpack Compose. A fork of the original monochrome [MonoMail](https://github.com/shrivatsav-0/monomail) email client, now featuring Dynamic Colors sourced from the user's wallpaper.
 
 [Download APK](https://github.com/capuanosalvo/materialmail/releases/latest)
@@ -270,4 +273,6 @@ Fork -> Branch -> Commit -> Pull Request
 ---
 
 Original project built by [Shrivatsav](https://github.com/shrivatsav-0)
+
 Material You fork maintained by [capuanosalvo](https://github.com/capuanosalvo)
+
